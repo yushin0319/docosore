@@ -66,6 +66,20 @@ export default function Home() {
           </Tabs>
         </Box>
         {/* 地図 */}
+        {tabIndex === 0 && (
+          <SearchBar
+            option={csvData
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              ?.filter((item: any) => item["name_ja"] && item["code"])
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              .map((item: any) => ({
+                label: item["name_ja"],
+                value: item["code"],
+              }))}
+            setSelectedValue={setSelectedValue}
+          />
+        )}
+
         <Box
           sx={{
             display: "flex",
@@ -97,17 +111,6 @@ export default function Home() {
                 code={selectedValue || "JPN"}
                 csvData={csvData}
               ></CountryCard>
-              <SearchBar
-                option={csvData
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  ?.filter((item: any) => item["name_ja"] && item["code"])
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  .map((item: any) => ({
-                    label: item["name_ja"],
-                    value: item["code"],
-                  }))}
-                setSelectedValue={setSelectedValue}
-              />
             </Box>
           )}
           {tabIndex === 1 && (

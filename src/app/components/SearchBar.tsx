@@ -29,6 +29,7 @@ const SearchBar = ({
         backgroundColor: "#ffffff",
         borderRadius: "4px",
         boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+        mb: 1,
       }}
       onChange={(event, newValue) => {
         setValue(newValue);
