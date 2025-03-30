@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 
 type Props = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   csvData: any[];
   selectedMetric: string;
   setSelectedMetric: (value: string) => void;

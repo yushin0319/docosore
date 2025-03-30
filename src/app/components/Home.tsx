@@ -17,6 +17,7 @@ const MapViewer = dynamic(
 );
 
 export default function Home() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [csvData, setCsvData] = useState<any>(null);
   const [selectedValue, setSelectedValue] = useState<string | null>("JPN");
   const [tabIndex, setTabIndex] = useState(0); // タブの状態
@@ -33,7 +34,7 @@ export default function Home() {
         setCsvData(parsedData.data);
       });
   }, []);
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleTabChange = (_: any, newIndex: number) => {
     setTabIndex(newIndex);
     if (newIndex === 0) {
@@ -98,7 +99,9 @@ export default function Home() {
               ></CountryCard>
               <SearchBar
                 option={csvData
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   ?.filter((item: any) => item["name_ja"] && item["code"])
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   .map((item: any) => ({
                     label: item["name_ja"],
                     value: item["code"],

@@ -15,9 +15,11 @@ export const MapViewer = ({
   selectedValue: string | null;
   setSelectedValue: (value: string | null) => void;
   selectedMetric: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   csvData: any[];
   topN: number;
 }) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [geoData, setGeoData] = useState<any>(null);
   const [LatLng, setLatLng] = useState<[number, number] | null>(null);
   const isMobile = useMediaQuery("(max-width:600px)");
@@ -54,7 +56,7 @@ export const MapViewer = ({
   useEffect(() => {
     if (!geoData || !selectedValue) return;
     let coordinates: [number, number][] | undefined;
-
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const feature = geoData.features.find((f: any) => f.id === selectedValue);
 
     if (feature?.geometry?.type === "Polygon") {

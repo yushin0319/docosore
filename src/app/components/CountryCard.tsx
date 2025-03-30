@@ -6,8 +6,10 @@ export const CountryCard = ({
   csvData,
 }: {
   code: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   csvData: any[];
 }) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [countryData, setCountryData] = useState<any>(null);
   const isMobile = useMediaQuery("(max-width:600px)");
 
@@ -48,7 +50,7 @@ export const CountryCard = ({
       }
     }
   };
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const arrangeData = (data: any): { [key: string]: string } => {
     const result: { [key: string]: string } = {};
     Object.keys(data).forEach((key) => {
