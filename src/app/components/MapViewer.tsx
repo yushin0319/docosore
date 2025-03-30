@@ -94,7 +94,6 @@ export const MapViewer = ({
             data={geoData}
             eventHandlers={{
               click: (e) => {
-                const layer = e.target;
                 const feature = e.propagatedFrom.feature;
                 if (feature?.id) {
                   setSelectedValue(feature.id); // ← propsで渡された setter を使う
