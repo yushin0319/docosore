@@ -4,7 +4,7 @@ import { ThemeRegistry } from "./components/ThemeRegistry";
 
 export const metadata: Metadata = {
   title: "ドコソレ",
-  description: "世界地図でいろんな国の指標が見えるよ！",
+  description: "世界地図でうろ覚えの国を探す",
 };
 
 export default function RootLayout({
