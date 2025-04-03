@@ -30,6 +30,7 @@ const SearchBar = ({
         <TextField {...params} label="Search" autoComplete="off" />
       )}
       value={value}
+      inputValue={inputValue}
       sx={{
         width: "100%",
         backgroundColor: "#ffffff",
@@ -38,18 +39,11 @@ const SearchBar = ({
       }}
       onChange={(event, newValue) => {
         setValue(newValue);
+        setInputValue(newValue ? newValue.label : "");
+        setSelectedValue(newValue ? newValue.value : null);
       }}
-      inputValue={inputValue}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
-        const selectedOption = option.find(
-          (opt) => opt.label === newInputValue
-        );
-        if (selectedOption) {
-          setSelectedValue(selectedOption.value);
-        } else {
-          setSelectedValue(null);
-        }
       }}
     />
   );
