@@ -74,6 +74,7 @@ export default function Home() {
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               .map((item: any) => ({
                 label: item["name_ja"],
+                reading: item["name_ja_hira"],
                 value: item["code"],
               }))}
             setSelectedValue={setSelectedValue}

@@ -1,5 +1,6 @@
-import { Box, Card, Typography, useMediaQuery } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, Card, Grid, Typography, useMediaQuery } from "@mui/material";
+import countries from "i18n-iso-countries";
+import { useEffect, useMemo, useState } from "react";
 
 export const CountryCard = ({
   code,
@@ -11,6 +12,7 @@ export const CountryCard = ({
 }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [countryData, setCountryData] = useState<any>(null);
+  const [rankDict, setRankDict] = useState<{ [key: string]: number }>({});
   const isMobile = useMediaQuery("(max-width:600px)");
 
   const formatNumber = (num: number): string => {
@@ -54,23 +56,61 @@ export const CountryCard = ({
   const arrangeData = (data: any): { [key: string]: string } => {
     const result: { [key: string]: string } = {};
     Object.keys(data).forEach((key) => {
-      if (key === "code" || key === "name_ja") {
+      if (key === "code" || key === "name_ja" || key === "capital_ja") {
+        if (result[key] === "") result[key] = "--";
         result[key] = data[key];
         return;
       }
       const value = parseFloat(data[key]);
       if (!value || value === 0) {
-        result[key] = "データなし：--";
+        result[key] = "データなし：";
         return;
       }
+      result[key] = `${formatNumber(value)}：`;
+    });
+    const iso2 = countries.alpha3ToAlpha2(code)?.toLowerCase();
+    const flagUrl = `https://flagcdn.com/w320/${iso2}.png`;
+    result["flag"] = flagUrl;
+    return result;
+  };
+
+  const allRanks = useMemo(() => {
+    if (!csvData) return {};
+    const result: { [key: string]: { [code: string]: number } } = {};
+    const keys = Object.keys(csvData[0]);
+    for (const key of keys) {
       const sorted = [...csvData]
         .filter((item) => item[key])
         .sort((a, b) => Number(b[key]) - Number(a[key]));
-      const rank = sorted.findIndex((item) => item.code === data.code) + 1;
-      result[key] = `${formatNumber(value)}：${rank}位`;
-    });
+      sorted.forEach((item, index) => {
+        if (!result[key]) result[key] = {};
+        result[key][item.code] = index + 1;
+      });
+    }
     return result;
+  }, [csvData]);
+
+  const getRankDict = (country: string) => {
+    const dict: { [key: string]: number } = {};
+    Object.keys(allRanks).forEach((key) => {
+      if (allRanks[key][country]) {
+        dict[key] = allRanks[key][country];
+      }
+    });
+    return dict;
   };
+
+  const indicators = [
+    { key: "population", label: "人口（人）" },
+    { key: "surface", label: "面積（㎢）" },
+    { key: "gdp_nominal", label: "GDP（名目）（＄）" },
+    { key: "gdp_ppp_per_capita", label: "1人あたりGDP(PPP)(＄)" },
+    { key: "population_density", label: "人口密度（人/㎢）" },
+    { key: "net", label: "インターネット普及率（％）" },
+    { key: "tas", label: "平均気温（℃）" },
+    { key: "forest", label: "森林率（％）" },
+    { key: "young", label: "若者率（0-14歳）（％）" },
+  ];
 
   useEffect(() => {
     if (!csvData) return;
@@ -78,6 +118,8 @@ export const CountryCard = ({
     if (country) {
       const arranged = arrangeData(country);
       setCountryData(arranged);
+      const rankDict = getRankDict(code);
+      setRankDict(rankDict);
     }
   }, [code, csvData]);
 
@@ -96,54 +138,91 @@ export const CountryCard = ({
         <Box
           sx={{
             textAlign: "center",
+            alignItems: "center",
             display: "flex",
             flexDirection: "column",
           }}
         >
-          <Typography variant="h6">{countryData.name_ja}</Typography>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography variant="caption">人口（人）</Typography>
-            <Typography variant="caption">{countryData.population}</Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "90%",
+            }}
+          >
+            <Box
+              component="img"
+              src={countryData.flag}
+              alt="flag"
+              sx={{
+                width: "70px",
+                height: "45px",
+                my: "auto",
+              }}
+            />
+            <Box sx={{ width: "70%" }}>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontSize:
+                    countryData.name_ja.length > 10 ? "0.9rem" : "1.1rem",
+                  fontWeight: "bold",
+                  color: "#333",
+                }}
+              >
+                {countryData.name_ja}
+              </Typography>
+              <Typography variant="caption">
+                首都：{countryData.capital_ja}
+              </Typography>
+            </Box>
           </Box>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography variant="caption">面積（㎢）</Typography>
-            <Typography variant="caption">{countryData.surface}</Typography>
-          </Box>
-
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography variant="caption">GDP（名目）（＄）</Typography>
-            <Typography variant="caption">{countryData.gdp_nominal}</Typography>
-          </Box>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography variant="caption">1人あたりGDP（PPP）（＄）</Typography>
-            <Typography variant="caption">
-              {countryData.gdp_ppp_per_capita}
-            </Typography>
-          </Box>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography variant="caption">人口密度（人/㎢）</Typography>
-            <Typography variant="caption">
-              {countryData.population_density}
-            </Typography>
-          </Box>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography variant="caption">
-              インターネット普及率（％）
-            </Typography>
-            <Typography variant="caption">{countryData.net}</Typography>
-          </Box>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography variant="caption">平均気温（℃）</Typography>
-            <Typography variant="caption">{countryData.tas}</Typography>
-          </Box>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography variant="caption">森林率（％）</Typography>
-            <Typography variant="caption">{countryData.forest}</Typography>
-          </Box>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Typography variant="caption">若者率（0-14歳）（％）</Typography>
-            <Typography variant="caption">{countryData.young}</Typography>
-          </Box>
+          {indicators.map(({ key, label }) => (
+            <Grid container sx={{ width: "100%" }} key={key}>
+              <Grid size={6} sx={{ textAlign: "left" }}>
+                <Typography variant="caption">{label}</Typography>
+              </Grid>
+              <Grid size={4} sx={{ textAlign: "right" }}>
+                <Typography variant="caption">{countryData[key]}</Typography>
+              </Grid>
+              <Grid size={2} sx={{ textAlign: "left" }}>
+                <Box sx={{ position: "relative" }}>
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: "65%",
+                      left: 0,
+                      bottom: 0,
+                      bgcolor: "#0000ff",
+                      height: "30%",
+                      opacity:
+                        rankDict[key] <= 10
+                          ? 0.5
+                          : rankDict[key] <= 50
+                          ? 0.3
+                          : 0.1,
+                      transition: "width 0.3s ease",
+                      width: `${
+                        ((csvData.length - rankDict[key]) / csvData.length) *
+                        100
+                      }%`,
+                      borderRadius: 1,
+                    }}
+                  />
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      position: "relative",
+                      zIndex: 1,
+                      fontWeight: rankDict[key] <= 10 ? "bold" : "normal",
+                    }}
+                  >
+                    {rankDict[key]}位
+                  </Typography>
+                </Box>
+              </Grid>
+            </Grid>
+          ))}
         </Box>
       ) : (
         <Typography variant="body1">loading...</Typography>

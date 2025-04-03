@@ -66,9 +66,11 @@ export const MapViewer = ({
     }
 
     if (coordinates) {
+      const latSum = coordinates.reduce((sum, [, lat]) => sum + lat, 0);
+      const latAvg = latSum / coordinates.length;
       const lngSum = coordinates.reduce((sum, [lng]) => sum + lng, 0);
       const lngAvg = lngSum / coordinates.length;
-      setLatLng([0, lngAvg]);
+      setLatLng([latAvg, lngAvg]);
     }
   }, [selectedValue]);
 

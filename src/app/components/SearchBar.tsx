@@ -1,8 +1,9 @@
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, TextField, createFilterOptions } from "@mui/material";
 import { useState } from "react";
 
 type OptionType = {
   label: string;
+  reading: string;
   value: string;
 };
 
@@ -16,10 +17,15 @@ const SearchBar = ({
   const [value, setValue] = useState<OptionType | null>(null);
   const [inputValue, setInputValue] = useState("");
 
+  const filterOptions = createFilterOptions<OptionType>({
+    stringify: (option) => `${option.label} ${option.reading}`,
+  });
+
   return (
     <Autocomplete
       options={option}
       getOptionLabel={(option) => option.label}
+      filterOptions={filterOptions}
       renderInput={(params) => (
         <TextField {...params} label="Search" autoComplete="off" />
       )}
@@ -28,7 +34,6 @@ const SearchBar = ({
         width: "100%",
         backgroundColor: "#ffffff",
         borderRadius: "4px",
-        boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
         mb: 1,
       }}
       onChange={(event, newValue) => {
