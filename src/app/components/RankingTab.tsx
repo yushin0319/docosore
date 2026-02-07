@@ -8,10 +8,11 @@ import {
   Slider,
   Typography,
 } from "@mui/material";
+import { INDICATORS } from "../constants";
+import type { CountryRow } from "../types";
 
 type Props = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  csvData: any[];
+  csvData: CountryRow[];
   selectedMetric: string;
   setSelectedMetric: (value: string) => void;
   setSelectedValue: (code: string) => void;
@@ -45,17 +46,11 @@ export default function RankingTab({
           label="指標を選択"
           onChange={(e) => setSelectedMetric(e.target.value)}
         >
-          <MenuItem value="population">人口（人）</MenuItem>
-          <MenuItem value="surface">面積（㎢）</MenuItem>
-          <MenuItem value="population_density">人口密度（人/㎢）</MenuItem>
-          <MenuItem value="gdp_nominal">GDP（名目）（＄）</MenuItem>
-          <MenuItem value="gdp_ppp_per_capita">
-            1人あたりGDP（PPP）（＄）
-          </MenuItem>
-          <MenuItem value="net">インターネット普及率（％）</MenuItem>
-          <MenuItem value="tas">平均気温（℃）</MenuItem>
-          <MenuItem value="forest">森林率（％）</MenuItem>
-          <MenuItem value="young">若者率（0-14歳）（％）</MenuItem>
+          {INDICATORS.map(({ key, label }) => (
+            <MenuItem key={key} value={key}>
+              {label}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
       <Slider
@@ -65,7 +60,7 @@ export default function RankingTab({
         step={1}
         sx={{
           mb: 2,
-          color: "#999",
+          color: "text.secondary",
         }}
       />
 
@@ -79,10 +74,10 @@ export default function RankingTab({
             p: 1,
             mb: 1,
             borderRadius: "4px",
-            bgcolor: "#ffffff",
-            boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+            bgcolor: "common.white",
+            boxShadow: 1,
             cursor: "pointer",
-            "&:hover": { bgcolor: "#f0f0f0" },
+            "&:hover": { bgcolor: "action.hover" },
           }}
         >
           <Typography>

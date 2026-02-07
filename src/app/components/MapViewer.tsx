@@ -1,7 +1,10 @@
 "use client";
-import { useMediaQuery } from "@mui/material";
+import { useMediaQuery, useTheme } from "@mui/material";
+import type { FeatureCollection } from "geojson";
 import { useEffect, useState } from "react";
 import { GeoJSON, MapContainer } from "react-leaflet";
+import { useRanking } from "../hooks/useRanking";
+import type { CountryRow } from "../types";
 import FlyToCountry from "./FlyToCountry";
 import { ZoomBoundController } from "./ZoomBoundController";
 
@@ -15,15 +18,15 @@ export const MapViewer = ({
   selectedValue: string | null;
   setSelectedValue: (value: string | null) => void;
   selectedMetric: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  csvData: any[];
+  csvData: CountryRow[];
   topN: number;
 }) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [geoData, setGeoData] = useState<any>(null);
+  const [geoData, setGeoData] = useState<FeatureCollection | null>(null);
   const [LatLng, setLatLng] = useState<[number, number] | null>(null);
+  const theme = useTheme();
   const isMobile = useMediaQuery("(max-width:600px)");
-  const [rankDict, setRankDict] = useState<{ [key: string]: number }>({});
+  const allRanks = useRanking(csvData);
+  const rankDict = allRanks[selectedMetric] ?? {};
 
   useEffect(() => {
     fetch("/world.geojson")
@@ -31,38 +34,17 @@ export const MapViewer = ({
       .then((data) => setGeoData(data));
   }, []);
 
-  // csvDataが読み込まれた後に、rankDictを更新
-  useEffect(() => {
-    if (!csvData) return;
-    const dict: { [key: string]: number } = {};
-    const sortedData = [...csvData]
-      .filter((item) => item[selectedMetric])
-      .sort((a, b) => Number(b[selectedMetric]) - Number(a[selectedMetric]));
-    csvData.forEach((item) => {
-      const code = item["code"];
-      const value = item[selectedMetric];
-      if (value == 0) {
-        dict[code] = -1;
-      } else {
-        const rank = sortedData.findIndex((i) => i.code === code) + 1;
-        dict[code] = rank;
-      }
-    });
-    setRankDict(dict);
-  }, [csvData, selectedMetric]);
-
   // 地図の中心座標を選択された国の座標に設定
   // ただし、選択された国が存在しない場合は、デフォルトの座標を使用
   useEffect(() => {
     if (!geoData || !selectedValue) return;
-    let coordinates: [number, number][] | undefined;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const feature = geoData.features.find((f: any) => f.id === selectedValue);
+    let coordinates: number[][] | undefined;
+    const feature = geoData.features.find((f) => f.id === selectedValue);
 
     if (feature?.geometry?.type === "Polygon") {
-      coordinates = feature.geometry.coordinates[0];
+      coordinates = feature.geometry.coordinates[0] as number[][];
     } else if (feature?.geometry?.type === "MultiPolygon") {
-      coordinates = feature.geometry.coordinates[0][0];
+      coordinates = feature.geometry.coordinates[0][0] as number[][];
     }
 
     if (coordinates) {
@@ -72,7 +54,7 @@ export const MapViewer = ({
       const lngAvg = lngSum / coordinates.length;
       setLatLng([latAvg, lngAvg]);
     }
-  }, [selectedValue]);
+  }, [selectedValue, geoData]);
 
   return (
     <MapContainer
@@ -81,7 +63,7 @@ export const MapViewer = ({
       style={{
         height: "100%",
         width: "100%",
-        backgroundColor: "#DDDDED",
+        backgroundColor: theme.palette.map.background,
       }}
       scrollWheelZoom={false}
       maxBounds={[
@@ -108,16 +90,16 @@ export const MapViewer = ({
               const rank = rankDict[code] || -1;
               const ratio = (topN - rank) / topN;
               return {
-                color: "#333",
+                color: theme.palette.map.border,
                 fillColor:
-                  feature?.id == selectedValue
-                    ? "#f39c12"
+                  String(feature?.id) === selectedValue
+                    ? theme.palette.map.selected
                     : rank < 0
-                    ? "#bbb"
+                    ? theme.palette.map.noData
                     : rank < topN
                     ? `rgba(10,100,10, ${ratio})`
-                    : "#ffffff",
-                fillOpacity: feature?.id == selectedValue ? 0.8 : 0.8,
+                    : theme.palette.common.white,
+                fillOpacity: String(feature?.id) === selectedValue ? 0.8 : 0.8,
                 weight: 0.1,
               };
             }}

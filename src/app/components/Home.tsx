@@ -1,9 +1,9 @@
 "use client";
-import { Box, Container, Tab, Tabs } from "@mui/material";
+import { Box, Container, Tab, Tabs, Typography } from "@mui/material";
 import "leaflet/dist/leaflet.css";
 import dynamic from "next/dynamic";
-import Papa from "papaparse";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useCSVData } from "../hooks/useCSVData";
 import { CountryCard } from "./CountryCard";
 import RankingTab from "./RankingTab";
 import SearchBar from "./SearchBar";
@@ -17,25 +17,12 @@ const MapViewer = dynamic(
 );
 
 export default function Home() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [csvData, setCsvData] = useState<any>(null);
+  const { data: csvData, loading, error } = useCSVData();
   const [selectedValue, setSelectedValue] = useState<string | null>("JPN");
   const [tabIndex, setTabIndex] = useState(0); // タブの状態
   const [selectedMetric, setSelectedMetric] = useState<string>("population"); // 選択された指標
   const [topN, setTopN] = useState(0); // ランキングの上位N件
-
-  useEffect(() => {
-    fetch("/df_merged.csv")
-      .then((res) => res.text())
-      .then((csvText) => {
-        const parsedData = Papa.parse(csvText, {
-          header: true,
-        });
-        setCsvData(parsedData.data);
-      });
-  }, []);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleTabChange = (_: any, newIndex: number) => {
+  const handleTabChange = (_: React.SyntheticEvent, newIndex: number) => {
     setTabIndex(newIndex);
     if (newIndex === 0) {
       setTopN(0);
@@ -52,7 +39,7 @@ export default function Home() {
         sx={{
           pb: 4,
           px: 1,
-          bgcolor: "#eeeeee",
+          bgcolor: "background.default",
           minHeight: "100vh",
           display: "flex",
           flexDirection: "column",
@@ -65,18 +52,21 @@ export default function Home() {
             <Tab label="ランキング" value={1} />
           </Tabs>
         </Box>
+        {error && (
+          <Typography color="error" sx={{ textAlign: "center", my: 2 }}>
+            データの読み込みに失敗しました
+          </Typography>
+        )}
         {/* 地図 */}
         {tabIndex === 0 && (
           <SearchBar
             option={csvData
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              ?.filter((item: any) => item["name_ja"] && item["code"])
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              .map((item: any) => ({
+              ?.filter((item) => item["name_ja"] && item["code"])
+              .map((item) => ({
                 label: item["name_ja"],
                 reading: item["name_ja_hira"],
                 value: item["code"],
-              }))}
+              })) ?? []}
             setSelectedValue={setSelectedValue}
           />
         )}
@@ -93,7 +83,7 @@ export default function Home() {
             selectedValue={selectedValue}
             setSelectedValue={setSelectedValue}
             selectedMetric={selectedMetric}
-            csvData={csvData}
+            csvData={csvData ?? []}
             topN={topN}
           />
         </Box>
@@ -110,14 +100,14 @@ export default function Home() {
             >
               <CountryCard
                 code={selectedValue || "JPN"}
-                csvData={csvData}
+                csvData={csvData ?? []}
               ></CountryCard>
             </Box>
           )}
           {tabIndex === 1 && (
             <Box sx={{ p: 2 }}>
               <RankingTab
-                csvData={csvData}
+                csvData={csvData ?? []}
                 setSelectedValue={setSelectedValue}
                 selectedMetric={selectedMetric}
                 setSelectedMetric={setSelectedMetric}
