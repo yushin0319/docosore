@@ -13,7 +13,7 @@
 
 | カテゴリ | 技術 |
 |---------|------|
-| フレームワーク | Next.js 15 (App Router) |
+| フレームワーク | Next.js 16 (App Router) |
 | UI | MUI (Material UI) v7 |
 | 地図 | Leaflet + react-leaflet |
 | データ処理 | PapaParse (CSV), i18n-iso-countries |
