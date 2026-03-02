@@ -4,13 +4,13 @@ import type { CountryRow } from "../types";
 export const formatNumber = (num: number): string => {
   if (num < 10000) return num.toFixed(1).toString();
 
-  const numStr = Math.round(
-    num / Math.pow(10, Math.floor(Math.log10(num)) - 2)
-  )
-    .toString()
-    .padEnd(Math.floor(Math.log10(num)) + 1, "0");
-
-  const value = parseInt(numStr, 10);
+  // Intl.NumberFormat で3桁の有効数字に丸める
+  const value = Number(
+    new Intl.NumberFormat("en-US", {
+      maximumSignificantDigits: 3,
+      useGrouping: false,
+    }).format(num)
+  );
 
   if (value >= 1e12) {
     const tyo = Math.floor(value / 1e12);
