@@ -13,11 +13,11 @@ const MapViewer = dynamic(
   {
     ssr: false,
     loading: () => <p>Loading...</p>,
-  }
+  },
 );
 
 export default function Home() {
-  const { data: csvData, loading, error } = useCSVData();
+  const { data: csvData, error } = useCSVData();
   const [selectedValue, setSelectedValue] = useState<string | null>("JPN");
   const [tabIndex, setTabIndex] = useState(0); // タブの状態
   const [selectedMetric, setSelectedMetric] = useState<string>("population"); // 選択された指標
@@ -60,13 +60,15 @@ export default function Home() {
         {/* 地図 */}
         {tabIndex === 0 && (
           <SearchBar
-            option={csvData
-              ?.filter((item) => item["name_ja"] && item["code"])
-              .map((item) => ({
-                label: item["name_ja"],
-                reading: item["name_ja_hira"],
-                value: item["code"],
-              })) ?? []}
+            option={
+              csvData
+                ?.filter((item) => item.name_ja && item.code)
+                .map((item) => ({
+                  label: item.name_ja,
+                  reading: item.name_ja_hira,
+                  value: item.code,
+                })) ?? []
+            }
             setSelectedValue={setSelectedValue}
           />
         )}

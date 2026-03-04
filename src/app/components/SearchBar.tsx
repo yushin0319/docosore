@@ -1,4 +1,4 @@
-import { Autocomplete, TextField, createFilterOptions } from "@mui/material";
+import { Autocomplete, createFilterOptions, TextField } from "@mui/material";
 import { useState } from "react";
 
 type OptionType = {
@@ -37,12 +37,12 @@ const SearchBar = ({
         borderRadius: "4px",
         mb: 1,
       }}
-      onChange={(event, newValue) => {
+      onChange={(_event, newValue) => {
         setValue(newValue);
         setInputValue(newValue ? newValue.label : "");
         setSelectedValue(newValue ? newValue.value : null);
       }}
-      onInputChange={(event, newInputValue) => {
+      onInputChange={(_event, newInputValue) => {
         setInputValue(newInputValue);
       }}
     />
