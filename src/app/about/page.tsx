@@ -2,7 +2,11 @@ import { Box, Container, Typography } from "@mui/material";
 
 export default function About() {
   return (
-    <Container component="main" maxWidth="md" sx={{ py: 6, px: 2, color: "text.primary" }}>
+    <Container
+      component="main"
+      maxWidth="md"
+      sx={{ py: 6, px: 2, color: "text.primary" }}
+    >
       <Typography variant="h4" fontWeight="bold" sx={{ mb: 3 }}>
         このサイトについて
       </Typography>
@@ -24,10 +28,20 @@ export default function About() {
         <Typography variant="body1">
           以下の公的・信頼性の高いデータソースをもとに、2023年時点の指標を統合・加工しています：
         </Typography>
-        <Box component="ul" sx={{ listStyleType: "disc", listStylePosition: "inside", mt: 1 }}>
+        <Box
+          component="ul"
+          sx={{ listStyleType: "disc", listStylePosition: "inside", mt: 1 }}
+        >
           <Box component="li">
             <strong>World Bank（世界銀行）</strong>
-            <Box component="ul" sx={{ listStyleType: "disc", listStylePosition: "inside", ml: 2.5 }}>
+            <Box
+              component="ul"
+              sx={{
+                listStyleType: "disc",
+                listStylePosition: "inside",
+                ml: 2.5,
+              }}
+            >
               <Box component="li">
                 森林率: <code>API_AG.LND.FRST.ZS_DS2_en_csv_v2_13350.csv</code>
               </Box>
@@ -67,10 +81,17 @@ export default function About() {
         <Typography variant="h6" fontWeight={600} sx={{ mb: 1 }}>
           加工・補完
         </Typography>
-        <Box component="ul" sx={{ listStyleType: "disc", listStylePosition: "inside" }}>
+        <Box
+          component="ul"
+          sx={{ listStyleType: "disc", listStylePosition: "inside" }}
+        >
           <Box component="li">国コード（ISO3）を基準にデータを統一・結合</Box>
-          <Box component="li">欠損値は「データなし」と表示し、集計には含めない</Box>
-          <Box component="li">値の桁数や単位を調整し、視認性を高める工夫を実施</Box>
+          <Box component="li">
+            欠損値は「データなし」と表示し、集計には含めない
+          </Box>
+          <Box component="li">
+            値の桁数や単位を調整し、視認性を高める工夫を実施
+          </Box>
         </Box>
       </Box>
 
@@ -88,9 +109,16 @@ export default function About() {
         <Typography variant="h6" fontWeight={600} sx={{ mb: 1 }}>
           制作・免責事項
         </Typography>
-        <Box component="ul" sx={{ listStyleType: "disc", listStylePosition: "inside" }}>
-          <Box component="li">このサイトは個人の学習・研究目的で作成されたものです</Box>
-          <Box component="li">内容の正確性には留意していますが、保証はいたしかねます</Box>
+        <Box
+          component="ul"
+          sx={{ listStyleType: "disc", listStylePosition: "inside" }}
+        >
+          <Box component="li">
+            このサイトは個人の学習・研究目的で作成されたものです
+          </Box>
+          <Box component="li">
+            内容の正確性には留意していますが、保証はいたしかねます
+          </Box>
           <Box component="li">
             データの二次利用に関しては、各ソースの利用規約をご確認ください
           </Box>

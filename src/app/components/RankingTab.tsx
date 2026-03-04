@@ -33,7 +33,7 @@ export default function RankingTab({
     .sort((a, b) => Number(b[selectedMetric]) - Number(a[selectedMetric]))
     .slice(0, 10);
 
-  const handleSliderChange = (event: Event, newValue: number | number[]) => {
+  const handleSliderChange = (_event: Event, newValue: number | number[]) => {
     setTopN(newValue as number);
   };
 

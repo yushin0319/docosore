@@ -1,4 +1,11 @@
-import { Box, Card, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  Card,
+  Grid,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { INDICATORS } from "../constants";
 import { getRankForCountry, useRanking } from "../hooks/useRanking";
@@ -12,7 +19,9 @@ export const CountryCard = ({
   code: string;
   csvData: CountryRow[];
 }) => {
-  const [countryData, setCountryData] = useState<Record<string, string> | null>(null);
+  const [countryData, setCountryData] = useState<Record<string, string> | null>(
+    null,
+  );
   const theme = useTheme();
   const isMobile = useMediaQuery("(max-width:600px)");
   const allRanks = useRanking(csvData);
@@ -103,8 +112,8 @@ export const CountryCard = ({
                         rankDict[key] <= 10
                           ? 0.5
                           : rankDict[key] <= 50
-                          ? 0.3
-                          : 0.1,
+                            ? 0.3
+                            : 0.1,
                       transition: "width 0.3s ease",
                       width: `${
                         ((csvData.length - rankDict[key]) / csvData.length) *

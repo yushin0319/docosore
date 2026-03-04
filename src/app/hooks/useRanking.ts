@@ -7,7 +7,7 @@ import type { CountryRow } from "../types";
  *   rank > 0: 1-indexed の順位, -1: データなし/0値
  */
 export function useRanking(
-  csvData: CountryRow[]
+  csvData: CountryRow[],
 ): Record<string, Record<string, number>> {
   return useMemo(() => {
     if (!csvData || csvData.length === 0) return {};
@@ -37,7 +37,7 @@ export function useRanking(
  */
 export function getRankForCountry(
   allRanks: Record<string, Record<string, number>>,
-  country: string
+  country: string,
 ): Record<string, number> {
   const dict: Record<string, number> = {};
   for (const key of Object.keys(allRanks)) {

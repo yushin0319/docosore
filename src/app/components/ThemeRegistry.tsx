@@ -2,7 +2,7 @@
 "use client";
 
 import { CssBaseline } from "@mui/material";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 declare module "@mui/material/styles" {
   interface Palette {

@@ -95,10 +95,10 @@ export const MapViewer = ({
                   String(feature?.id) === selectedValue
                     ? theme.palette.map.selected
                     : rank < 0
-                    ? theme.palette.map.noData
-                    : rank < topN
-                    ? `rgba(10,100,10, ${ratio})`
-                    : theme.palette.common.white,
+                      ? theme.palette.map.noData
+                      : rank < topN
+                        ? `rgba(10,100,10, ${ratio})`
+                        : theme.palette.common.white,
                 fillOpacity: String(feature?.id) === selectedValue ? 0.8 : 0.8,
                 weight: 0.1,
               };

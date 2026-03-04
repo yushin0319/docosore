@@ -9,7 +9,7 @@ export const formatNumber = (num: number): string => {
     new Intl.NumberFormat("en-US", {
       maximumSignificantDigits: 3,
       useGrouping: false,
-    }).format(num)
+    }).format(num),
   );
 
   if (value >= 1e12) {
@@ -41,7 +41,7 @@ export const formatNumber = (num: number): string => {
 
 export const arrangeData = (
   data: CountryRow,
-  code: string
+  code: string,
 ): Record<string, string> => {
   const result: Record<string, string> = {};
   Object.keys(data).forEach((key) => {
@@ -59,6 +59,6 @@ export const arrangeData = (
   });
   const iso2 = countries.alpha3ToAlpha2(code)?.toLowerCase();
   const flagUrl = `https://flagcdn.com/w320/${iso2}.png`;
-  result["flag"] = flagUrl;
+  result.flag = flagUrl;
   return result;
 };

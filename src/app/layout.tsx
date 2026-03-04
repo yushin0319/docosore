@@ -1,5 +1,5 @@
 // app/layout.tsx
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { ThemeRegistry } from "./components/ThemeRegistry";
 
 export const metadata: Metadata = {
