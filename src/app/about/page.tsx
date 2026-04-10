@@ -7,12 +7,12 @@ export default function About() {
       maxWidth="md"
       sx={{ py: 6, px: 2, color: "text.primary" }}
     >
-      <Typography variant="h4" fontWeight="bold" sx={{ mb: 3 }}>
+      <Typography variant="h4" sx={{ fontWeight: "bold", mb: 3 }}>
         このサイトについて
       </Typography>
 
       <Box component="section" sx={{ mb: 4 }}>
-        <Typography variant="h6" fontWeight={600} sx={{ mb: 1 }}>
+        <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
           概要
         </Typography>
         <Typography variant="body1">
@@ -22,7 +22,7 @@ export default function About() {
       </Box>
 
       <Box component="section" sx={{ mb: 4 }}>
-        <Typography variant="h6" fontWeight={600} sx={{ mb: 1 }}>
+        <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
           使用データ
         </Typography>
         <Typography variant="body1">
@@ -78,7 +78,7 @@ export default function About() {
       </Box>
 
       <Box component="section" sx={{ mb: 4 }}>
-        <Typography variant="h6" fontWeight={600} sx={{ mb: 1 }}>
+        <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
           加工・補完
         </Typography>
         <Box
@@ -96,7 +96,7 @@ export default function About() {
       </Box>
 
       <Box component="section" sx={{ mb: 4 }}>
-        <Typography variant="h6" fontWeight={600} sx={{ mb: 1 }}>
+        <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
           データの時点
         </Typography>
         <Typography variant="body1">
@@ -106,7 +106,7 @@ export default function About() {
       </Box>
 
       <Box component="section">
-        <Typography variant="h6" fontWeight={600} sx={{ mb: 1 }}>
+        <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
           制作・免責事項
         </Typography>
         <Box
