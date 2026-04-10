@@ -1,4 +1,5 @@
 // app/layout.tsx
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v16-appRouter";
 import type { Metadata } from "next";
 import { ThemeRegistry } from "./components/ThemeRegistry";
 
@@ -15,7 +16,9 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body>
-        <ThemeRegistry>{children}</ThemeRegistry>
+        <AppRouterCacheProvider>
+          <ThemeRegistry>{children}</ThemeRegistry>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );
