@@ -29,7 +29,7 @@
     "@biomejs/biome": "^2.5.6",
     "@testing-library/jest-dom": "^7.0.0",
     "@testing-library/react": "^16.3.2",
-    "@testing-library/user-event": "^14.6.1",
+    "@testing-library/user-event": "^14.6.3",
     "@turf/bbox": "^7.3.5",
     "@types/node": "^26",
     "@types/papaparse": "^5.5.2",
