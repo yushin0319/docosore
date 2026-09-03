@@ -35,7 +35,7 @@
     "@types/papaparse": "^5.5.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@vitejs/plugin-react": "^6.1.0",
+    "@vitejs/plugin-react": "^6.1.1",
     "happy-dom": "^20.11.6",
     "husky": "^9.1.7",
     "jsdom": "^30.0.1",
