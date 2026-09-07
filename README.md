@@ -12,6 +12,8 @@
 - データ: CSV（PapaParse）+ GeoJSON
 - テスト: vitest + @testing-library/react + happy-dom
 - Lint: Biome / Husky + lint-staged
+- パッケージマネージャ: npm（`package-lock.json`）
+- 依存の `overrides`: `postcss ^8.5.25` / `sharp ^0.35.3`（推移的依存の high 脆弱性を潰すため。#128）
 
 ## 構成
 
@@ -33,6 +35,9 @@ src/app/
     FlyToCountry.tsx      クリックで対象国へズーム
     ZoomBoundController.tsx
     ThemeRegistry.tsx     MUI テーマ
+    __tests__/            CountryCard / RankingTab / SearchBar のテスト
+  utils/__tests__/        format のテスト
+src/test-setup.ts         vitest のセットアップ（jest-dom 拡張）
 public/
   df_merged.csv           国別データ
   world.geojson           世界地図ポリゴン
