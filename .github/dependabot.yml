@@ -5,3 +5,23 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    groups:
+      # react と react-dom は完全に同一バージョンである必要がある
+      # (不一致だと react-dom が "Incompatible React versions" で throw する)。
+      # shirankedo は 2026-09-12 に react だけ上がって main が壊れた。
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      # vite と @vitejs/* は peer で結びついている (plugin-react 6 の peer は vite ^8)。
+      vite:
+        patterns:
+          - "vite"
+          - "@vitejs/*"
+      # vitest 本体と @vitest/* は peer をバージョン厳密指定するため 1 PR にまとめる。
+      vitest:
+        patterns:
+          - "vitest"
+          - "@vitest/*"
