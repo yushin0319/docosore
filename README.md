@@ -13,7 +13,7 @@
 - テスト: vitest + @testing-library/react + happy-dom
 - Lint: Biome / Husky + lint-staged
 - パッケージマネージャ: npm（`package-lock.json`）
-- 依存の `overrides`: `postcss ^8.5.25` / `sharp ^0.35.3`（推移的依存の high 脆弱性を潰すため。#128）
+- 依存の `overrides`: `postcss ^8.5.25` / `sharp ^0.35.4`（推移的依存の high 脆弱性を潰すため。#128）
 
 ## 構成
 
